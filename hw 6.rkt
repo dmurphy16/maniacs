@@ -203,6 +203,12 @@
 ; create-binning: (X Y) [List-of X] [X -> Y] [Y Y[-> Boolean] -> [List-of Bins] 
 ; produces a binning of elements X based on their propterties, Y
 
+(define-struct bin [property lox])
+
+(define BIN-1 (make-bin "brown" CUPS 
+(define BIN-2 (make-bin 10 (list CUP1 CUP3 CUP2 CUP4 CUP5)))
+(define BIN-3 (make-bin "plastic" (list CUP3 CUP4 CUP1 CUP2 CUP5)))
+
 (check-expect (create-binning-helper CUPS "brown" string=? cup-color)
               (list (make-cup 10 "brown" "wood") (make-cup 8 "brown" "ceramic")))
 (check-expect (create-binning-helper CUPS 10 = cup-oz)
