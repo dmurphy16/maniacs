@@ -209,19 +209,28 @@
 (define BIN-2 (make-bin 10 (list CUP1 CUP3 CUP2 CUP4 CUP5)))
 (define BIN-3 (make-bin "plastic" (list CUP3 CUP4 CUP1 CUP2 CUP5)))
 
-(check-expect (create-binning-helper CUPS "brown" string=? cup-color)
+(check-expect (create-binning-helper-1 CUPS "brown" string=? cup-color)
               (list (make-cup 10 "brown" "wood") (make-cup 8 "brown" "ceramic")))
-(check-expect (create-binning-helper CUPS 10 = cup-oz)
+(check-expect (create-binning-helper-1 CUPS 10 = cup-oz)
               (list (make-cup 10 "brown" "wood") (make-cup 10 "red" "plastic")))
-(check-expect (create-binning-helper CUPS "wood" string=? cup-material)
+(check-expect (create-binning-helper-1 CUPS "wood" string=? cup-material)
               (list (make-cup 10 "brown" "wood") (make-cup 8 "blue" "wood")))
-(check-expect (create-binning-helper CUPS "plastic" string=? cup-material)
+(check-expect (create-binning-helper-1 CUPS "plastic" string=? cup-material)
               (list (make-cup 10 "red" "plastic") (make-cup 6 "clear" "plastic")))
 
-(define (create-binning-helper lox binner equiv? extract)
+(define (create-binning-helper-1 lox binner equiv? extract)
   (cond
     [(empty? lox) empty]
     [(cons? lox)
      (if (equiv? binner (extract (first lox)))
-         (cons (first lox) (create-binning-helper (rest lox) binner equiv? extract))
-         (create-binning-helper (rest lox) binner equiv? extract))]))
+         (cons (first lox) (create-binning-helper-1 (rest lox) binner equiv? extract))
+         (create-binning-helper-1 (rest lox) binner equiv? extract))]))
+
+
+(define (create-binning-helper-2 cup equiv? binner extract)
+  (cond
+    [(empty? cup) empty]
+    [(cons? cup) (if (equiv? binner (extract (first cup)))
+                     (create-binning-helper-2 (rest cup) equiv? binner extract)
+                     (cons (first cup) (create-binning-helper-2 (rest cup) equiv? binner extract)))]))
+
