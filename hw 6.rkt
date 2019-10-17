@@ -234,3 +234,7 @@
                      (create-binning-helper-2 (rest cup) equiv? binner extract)
                      (cons (first cup) (create-binning-helper-2 (rest cup) equiv? binner extract)))]))
 
+
+(define (create-binning lox equiv? extract)
+  (append (create-binning-helper-1 lox (extract (first lox)) equiv? extract)
+        (create-binning-helper-2 lox equiv? (extract (first lox)) extract)))
